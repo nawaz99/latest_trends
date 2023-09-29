@@ -1,23 +1,34 @@
 import React, { useState } from "react";
 import "../css/SearchComponent.css";
+import { useNavigate } from "react-router-dom";
 
-function SearchComponent() {
+function SearchComponent({ handleSuggesion }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [suggestion, setSuggestion] = useState(false);
+
+  const navigate = useNavigate();
+  const goToPosts = () => {
+    navigate({
+      pathname: "/search-results",
+      search: searchQuery,
+    });
+  };
 
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleSuggesion = () => {
-    setSuggestion(!suggestion);
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      goToPosts();
+      console.log("first");
+    }
   };
 
   return (
     <div className="search-container">
       <div className="top-center">
         <div className="search-box">
-          <div className="search-icon">
+          <div className="search-icon" onClick={goToPosts}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="42"
@@ -50,6 +61,7 @@ function SearchComponent() {
             value={searchQuery}
             onChange={handleInputChange}
             onClick={handleSuggesion}
+            onKeyDown={handleKeyDown}
           />
         </div>
       </div>
