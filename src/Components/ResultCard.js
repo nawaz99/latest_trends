@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "../css/ResultCard.css";
+import StarRating from "./StarRating";
 
-const ResultCard = ({ avatar, username, price, star_number,randomNum }) => {
-
-  const [colorchange, setColorChange] = useState({
+const ResultCard = ({ avatar, username, price, star_number }) => {
+  const [change, setChange] = useState({
     color: "white",
     myclass: "fa-regular fa-heart",
+    viewproduct: false,
   });
 
   const starStyle = {
@@ -16,41 +17,38 @@ const ResultCard = ({ avatar, username, price, star_number,randomNum }) => {
     color: "gold",
   };
 
-  const mystars = [];
-  for (let i = 1; i <= 5; i++) {
-    const style = i <= star_number ? filledStarStyle : starStyle;
-
-    mystars.push(
-      <div style={{ marginRight: "10px" }} key={i}>
-        <i className="fa fa-star" style={style}></i>
-      </div>
-    );
-  }
   const wishList = () => {
-    return colorchange.color == "white"
-      ? setColorChange({
-          color: "red",
-          myclass: "fa fa-heart",
-        })
-      : setColorChange({
-          color: "white",
-          myclass: "fa-regular fa-heart",
-        });
-  }
+    let obj1 = {
+      color: "red",
+      myclass: "fa fa-heart",
+    };
+
+    let obj2 = {
+      color: "white",
+      myclass: "fa-regular fa-heart",
+    };
+
+    setChange((chng) => (chng.color == "white" ? obj1 : obj2));
+  };
 
   return (
-    <div className="result_card" style={{ position: "relative" }} onClick={wishList}>
+    <div className="result_card">
       <img src={avatar} alt="avatar" />
       <i
-        className={colorchange.myclass}
+        className={change.myclass}
         style={{
-          color: colorchange.color,
+          color: change.color,
           position: "absolute",
           right: "10px",
           top: "10px",
           cursor: "pointer",
         }}
+        onClick={wishList}
       ></i>
+      <a href="#">
+        <p className="view_product">View product</p>
+      </a>
+
       <div style={{ padding: ".8rem" }}>
         <a href="#">{username}</a>
         <div style={{ color: "blue" }}>
@@ -60,8 +58,10 @@ const ResultCard = ({ avatar, username, price, star_number,randomNum }) => {
           Rs.{price - (price * 5) / 100}
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          {mystars}
-          <span>({randomNum})</span>
+          <div style={{ marginRight: "10px" }}>
+            <StarRating rating={star_number} />
+          </div>
+          <span>({star_number})</span>
         </div>
       </div>
     </div>

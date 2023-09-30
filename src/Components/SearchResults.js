@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import "../css/SearchResults.css";
 import Logo from "./Logo";
 import SuggestionBox from "./SuggestionBox";
-import Results from './Results';
+import Results from "./Results";
 
-const SearchResults = ({results}) => {
-  const [searchQuery, setSearchQuery] = useState("");
+const SearchResults = ({ results }) => {
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleInputChange = (e) => {
-    setSearchQuery(e.target.value);
+    const value = e.target.value;
+    setSearchTerm(value);
   };
+
+const myresults = [...results];
 
   return (
     <div>
@@ -45,12 +48,12 @@ const SearchResults = ({results}) => {
           type="text"
           className="search-input"
           placeholder="Search"
-          value={searchQuery}
           onChange={handleInputChange}
+          value={searchTerm}
         />
       </div>
 
-      <Results  results={results}/>
+      <Results results={myresults} />
     </div>
   );
 };
